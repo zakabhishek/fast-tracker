@@ -9,6 +9,7 @@
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap');
 
         :root {
+            /* Light Theme */
             --bg: #F9F8F4;
             --surface: #FFFFFF;
             --border: #E6E4DE;
@@ -20,31 +21,52 @@
             --success-light: #DCFCE7;
             --danger: #DC2626;
             --overlay: rgba(0,0,0,0.4);
+            --chip-bg: #F0F0F0;
+        }
+
+        body.dark-mode {
+            /* Dark Theme */
+            --bg: #121212;
+            --surface: #1C1C1E;
+            --border: #2C2C2E;
+            --accent: #FFFFFF;
+            --text-main: #FFFFFF;
+            --text-muted: #8E8E93;
+            --blue: #409CFF;
+            --success: #30D158;
+            --success-light: rgba(48, 209, 88, 0.15);
+            --danger: #FF453A;
+            --overlay: rgba(0,0,0,0.7);
+            --chip-bg: #2C2C2E;
+            color-scheme: dark;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         
-        body { background: var(--bg); color: var(--text-main); font-family: 'Plus Jakarta Sans', sans-serif; height: 100dvh; display: flex; flex-direction: column; overflow: hidden; -webkit-font-smoothing: antialiased; }
+        body { background: var(--bg); color: var(--text-main); font-family: 'Plus Jakarta Sans', sans-serif; height: 100dvh; display: flex; flex-direction: column; overflow: hidden; -webkit-font-smoothing: antialiased; transition: background 0.3s, color 0.3s; }
 
         /* --- Navigation --- */
         nav { padding: 16px 20px 10px; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
+        .nav-side { width: 30%; }
         .logo { font-family: 'Instrument Serif', serif; font-style: italic; font-size: 26px; }
-        .tab-group { display: flex; background: #EBEBEB; padding: 4px; border-radius: 12px; }
+        .tab-group { display: flex; background: var(--border); padding: 4px; border-radius: 12px; margin: 0 auto; }
         .tab { padding: 6px 16px; border-radius: 8px; font-size: 13px; font-weight: 700; border: none; cursor: pointer; color: var(--text-muted); background: transparent; transition: 0.2s; }
-        .tab.active { background: var(--surface); color: var(--text-main); box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+        .tab.active { background: var(--surface); color: var(--text-main); box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .btn-icon { background: none; border: none; font-size: 20px; color: var(--text-main); cursor: pointer; transition: transform 0.2s; }
+        .btn-icon:active { transform: scale(0.9); }
 
         .page { flex: 1; overflow-y: auto; padding: 10px 20px 40px; display: none; }
         .page.active { display: block; }
         ::-webkit-scrollbar { display: none; }
 
         /* --- Timer Card --- */
-        .clock-card { background: var(--surface); border-radius: 28px; padding: 24px 20px; text-align: center; border: 1px solid var(--border); margin-bottom: 12px; box-shadow: 0 4px 24px rgba(0,0,0,0.02); }
+        .clock-card { background: var(--surface); border-radius: 28px; padding: 24px 20px; text-align: center; border: 1px solid var(--border); margin-bottom: 12px; box-shadow: 0 4px 24px rgba(0,0,0,0.02); transition: background 0.3s, border 0.3s; }
         .t-stage-label { font-size: 12px; font-weight: 800; letter-spacing: 1px; color: var(--text-muted); text-transform: uppercase; }
         .t-time { font-family: 'Instrument Serif', serif; font-size: 56px; line-height: 1; margin: 12px 0; font-variant-numeric: tabular-nums; }
         
         /* Progress Bar */
         .prog-row { margin-top: 16px; text-align: left; }
-        .prog-wrap { height: 4px; background: #EBEBEB; border-radius: 2px; overflow: hidden; margin-bottom: 6px; }
+        .prog-wrap { height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; margin-bottom: 6px; }
         .prog-fill { height: 100%; background: var(--blue); border-radius: 2px; transition: width 1s linear; width: 0%; }
         .prog-fill.done { background: var(--success); }
         .prog-labels { display: flex; justify-content: space-between; font-size: 11px; font-weight: 700; color: var(--text-muted); }
@@ -52,62 +74,57 @@
 
         /* --- Info Grid --- */
         .body-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 16px; }
-        .body-card { background: var(--surface); border: 1px solid var(--border); border-radius: 18px; padding: 14px 10px; text-align: center; min-height: 95px; display: flex; flex-direction: column; justify-content: center; }
+        .body-card { background: var(--surface); border: 1px solid var(--border); border-radius: 18px; padding: 14px 10px; text-align: center; min-height: 95px; display: flex; flex-direction: column; justify-content: center; transition: background 0.3s, border 0.3s; }
         .body-card-icon { font-size: 22px; margin-bottom: 6px; }
         .body-card-text { font-size: 10px; font-weight: 600; color: var(--text-muted); line-height: 1.35; }
 
         /* --- Controls --- */
-        .control-panel { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 16px 20px; margin-bottom: 16px; }
+        .control-panel { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 16px 20px; margin-bottom: 16px; transition: background 0.3s, border 0.3s; }
         .panel-row { display: flex; justify-content: space-between; align-items: center; }
         .label { font-size: 11px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
-        .time-trigger { font-size: 13px; font-weight: 700; color: var(--text-main); background: var(--bg); border: 1px solid var(--border); padding: 8px 14px; border-radius: 10px; cursor: pointer; }
+        .time-trigger { font-size: 13px; font-weight: 700; color: var(--text-main); background: var(--bg); border: 1px solid var(--border); padding: 8px 14px; border-radius: 10px; cursor: pointer; transition: 0.3s; }
 
-        .btn-main { width: 100%; padding: 18px; border-radius: 20px; border: none; background: var(--accent); color: white; font-size: 16px; font-weight: 700; cursor: pointer; transition: transform 0.1s; }
+        .btn-main { width: 100%; padding: 18px; border-radius: 20px; border: none; background: var(--accent); color: var(--bg); font-size: 16px; font-weight: 700; cursor: pointer; transition: transform 0.1s, background 0.3s, color 0.3s; }
         .btn-main:active { transform: scale(0.98); }
-        .btn-main.stop { background: var(--danger); }
+        .btn-main.stop { background: var(--danger); color: #FFF; }
 
         /* --- Log Page Styling --- */
-        .log-section { background: var(--surface); border: 1px solid var(--border); border-radius: 24px; padding: 20px; margin-bottom: 16px; }
+        .log-section { background: var(--surface); border: 1px solid var(--border); border-radius: 24px; padding: 20px; margin-bottom: 16px; transition: background 0.3s, border 0.3s; }
         
-        /* Week Strip */
         .week-strip { display: flex; justify-content: space-between; margin-top: 10px; }
         .week-day { display: flex; flex-direction: column; align-items: center; gap: 8px; }
         .week-day-lbl { font-size: 11px; font-weight: 700; color: var(--text-muted); }
-        .week-dot { width: 36px; height: 36px; border-radius: 50%; border: 2px solid var(--border); background: var(--bg); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: var(--text-muted); }
+        .week-dot { width: 36px; height: 36px; border-radius: 50%; border: 2px solid var(--border); background: var(--bg); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: var(--text-muted); transition: 0.3s; }
         .week-dot.fasted { border-color: var(--success); background: var(--success-light); color: var(--success); }
         .week-dot.goal-met { border-color: var(--success); background: var(--success); color: white; }
 
-        /* Bar Chart */
         .bar-chart { display: flex; align-items: flex-end; justify-content: space-between; height: 100px; margin-top: 16px; gap: 6px; }
         .bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px; }
-        .bar-outer { width: 100%; height: 100%; background: var(--bg); border-radius: 6px 6px 0 0; position: relative; overflow: hidden; }
+        .bar-outer { width: 100%; height: 100%; background: var(--bg); border-radius: 6px 6px 0 0; position: relative; overflow: hidden; transition: 0.3s; }
         .bar-fill { width: 100%; background: var(--success); border-radius: 6px 6px 0 0; opacity: 0.5; position: absolute; bottom: 0; transition: height 0.3s; }
         .bar-fill.goal-met { opacity: 1; }
         .bar-lbl { font-size: 10px; font-weight: 700; color: var(--text-muted); }
 
-        /* Insights */
         .insights-grid { display: flex; justify-content: space-between; margin-top: 16px; text-align: center; }
         .insight-val { font-family: 'Instrument Serif', serif; font-size: 32px; margin-bottom: 4px; }
         
-        /* Log List */
         .list-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 12px; }
-        .history-item { background: var(--surface); border: 1px solid var(--border); border-radius: 18px; padding: 16px; margin-bottom: 10px; }
+        .history-item { background: var(--surface); border: 1px solid var(--border); border-radius: 18px; padding: 16px; margin-bottom: 10px; transition: 0.3s; }
         .hi-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
         .hi-date { font-size: 14px; font-weight: 700; }
         .hi-time { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
         .hi-dur { font-family: 'Instrument Serif', serif; font-size: 32px; line-height: 1; }
-        .hi-goal { font-size: 11px; font-weight: 700; padding: 4px 8px; border-radius: 6px; background: var(--bg); color: var(--text-muted); margin-top: 4px; display: inline-block; }
+        .hi-goal { font-size: 11px; font-weight: 700; padding: 4px 8px; border-radius: 6px; background: var(--bg); color: var(--text-muted); margin-top: 4px; display: inline-block; transition: 0.3s; }
         .hi-status { font-size: 11px; font-weight: 800; text-align: right; }
         .hi-status.ok { color: var(--success); }
         .hi-status.par { color: var(--text-muted); }
-        .hi-bot { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); padding-top: 12px; }
+        .hi-bot { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); padding-top: 12px; transition: 0.3s; }
         .hi-tags { display: flex; gap: 4px; flex-wrap: wrap; }
-        .hi-tag { font-size: 10px; font-weight: 700; padding: 4px 8px; border-radius: 6px; background: var(--bg); color: var(--text-muted); }
+        .hi-tag { font-size: 10px; font-weight: 700; padding: 4px 8px; border-radius: 6px; background: var(--bg); color: var(--text-muted); transition: 0.3s; }
         .hi-actions { display: flex; gap: 12px; }
-        .btn-icon { background: none; border: none; font-size: 16px; color: var(--text-muted); cursor: pointer; }
 
         /* --- Stages Page --- */
-        .stage-card { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; overflow: hidden; margin-bottom: 12px; }
+        .stage-card { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; overflow: hidden; margin-bottom: 12px; transition: 0.3s; }
         .stage-head { display: flex; align-items: center; gap: 12px; padding: 16px; }
         .stage-color { width: 6px; align-self: stretch; border-radius: 4px; }
         .stage-icon { font-size: 28px; }
@@ -119,29 +136,32 @@
         .b-txt { font-size: 12px; font-weight: 500; color: var(--text-muted); line-height: 1.5; }
 
         /* --- Modals --- */
-        .modal-overlay { display: none; position: fixed; inset: 0; background: var(--overlay); z-index: 100; align-items: flex-end; }
+        .modal-overlay { display: none; position: fixed; inset: 0; background: var(--overlay); z-index: 100; align-items: flex-end; transition: background 0.3s; }
         .modal-overlay.active { display: flex; }
-        .modal { background: var(--surface); width: 100%; border-radius: 32px 32px 0 0; padding: 24px 20px 40px; animation: slideUp 0.25s cubic-bezier(0.1, 0.9, 0.2, 1); }
+        .modal { background: var(--surface); width: 100%; border-radius: 32px 32px 0 0; padding: 24px 20px 40px; animation: slideUp 0.25s cubic-bezier(0.1, 0.9, 0.2, 1); transition: background 0.3s; }
         @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
         .m-title { font-family: 'Instrument Serif', serif; font-size: 28px; margin-bottom: 6px; }
         .m-desc { font-size: 13px; font-weight: 500; color: var(--text-muted); margin-bottom: 24px; line-height: 1.4; }
         .m-field { margin-bottom: 16px; }
-        input[type="datetime-local"] { width: 100%; padding: 16px; border-radius: 16px; border: 1px solid var(--border); background: var(--bg); font-family: inherit; font-size: 16px; font-weight: 600; color: var(--text-main); outline: none; }
+        input[type="datetime-local"] { width: 100%; padding: 16px; border-radius: 16px; border: 1px solid var(--border); background: var(--bg); font-family: inherit; font-size: 16px; font-weight: 600; color: var(--text-main); outline: none; transition: 0.3s; }
         input[type="datetime-local"]:disabled { opacity: 0.5; }
-        .btn-use-now { width: 100%; padding: 12px; background: transparent; border: 1px solid var(--border); border-radius: 12px; font-size: 13px; font-weight: 700; color: var(--blue); cursor: pointer; margin-top: 8px; }
+        .btn-use-now { width: 100%; padding: 12px; background: transparent; border: 1px solid var(--border); border-radius: 12px; font-size: 13px; font-weight: 700; color: var(--text-main); cursor: pointer; margin-top: 8px; transition: 0.3s; }
         .m-actions { margin-top: 24px; }
-        .btn-m-confirm { width: 100%; padding: 16px; border-radius: 16px; border: none; background: var(--accent); color: white; font-weight: 700; font-size: 15px; margin-bottom: 10px; cursor: pointer; }
+        .btn-m-confirm { width: 100%; padding: 16px; border-radius: 16px; border: none; background: var(--accent); color: var(--bg); font-weight: 700; font-size: 15px; margin-bottom: 10px; cursor: pointer; transition: 0.3s; }
         .btn-m-cancel { width: 100%; padding: 16px; background: transparent; border: none; font-weight: 700; font-size: 15px; color: var(--text-muted); cursor: pointer; }
     </style>
 </head>
 <body>
 
 <nav>
-    <div class="logo">fast.</div>
+    <div class="nav-side"><div class="logo">fast.</div></div>
     <div class="tab-group">
         <button class="tab active" onclick="showPage('timer', this)">Timer</button>
         <button class="tab" onclick="showPage('log', this)">Log</button>
         <button class="tab" onclick="showPage('stages', this)">Stages</button>
+    </div>
+    <div class="nav-side" style="text-align:right;">
+        <button id="theme-btn" class="btn-icon" onclick="toggleTheme()">🌙</button>
     </div>
 </nav>
 
@@ -181,17 +201,14 @@
 </div>
 
 <div id="page-log" class="page">
-    
     <div class="log-section">
         <div class="label" style="margin-bottom: 4px;">Last 7 Days</div>
         <div class="week-strip" id="week-strip"></div>
     </div>
-
     <div class="log-section">
         <div class="label">Recent Fasts</div>
         <div class="bar-chart" id="bar-chart"></div>
     </div>
-
     <div class="log-section">
         <div class="label">Fasting Insights</div>
         <div class="insights-grid">
@@ -200,7 +217,6 @@
             <div><div class="insight-val" id="ins-total">—</div><div class="label">Total</div></div>
         </div>
     </div>
-
     <div class="list-header">
         <div class="label">All Fasts</div>
         <div class="label" id="h-count" style="color:var(--text-muted)"></div>
@@ -277,7 +293,7 @@ const STAGES = [
     { name:'Extended Fast', icon:'🌙', range:[48,Infinity], color:'#06B6D4', bullets:['Deep metabolic adaptation — highly efficient fat burning.','Electrolytes become critical.','Only proceed with medical guidance.'], cards:[{i:'🌙',t:'Deep adaptation.'},{i:'💧',t:'Electrolytes critical.'},{i:'⚕️',t:'Medical guidance needed.'}] }
 ];
 
-let S = { isFasting: false, startTime: null, goalHours: 16, history: [] }; // goalHours left for logic/stats defaults
+let S = { isFasting: false, startTime: null, goalHours: 16, history: [] };
 let iv = null, editingLogId = null;
 
 const toLocalISO = (d) => { const dt=new Date(d); dt.setMinutes(dt.getMinutes() - dt.getTimezoneOffset()); return dt.toISOString().slice(0, 16); };
@@ -285,11 +301,25 @@ const fmtH = (ms) => { const m = Math.floor(ms/60000), h = Math.floor(m/60), mn 
 const fmtTimeRange = (s,e) => { const fmt=d=>new Date(d).toLocaleTimeString([],{hour:'numeric',minute:'2-digit'}); return `${fmt(s)} – ${fmt(e)}`; };
 
 function init() {
-    try { const saved = localStorage.getItem('fast_pro_v2'); if(saved){ const s=JSON.parse(saved); S={...S,...s}; if(S.startTime) S.startTime=new Date(S.startTime); } } catch(e){}
+    try { const saved = localStorage.getItem('fast_pro_v3'); if(saved){ const s=JSON.parse(saved); S={...S,...s}; if(S.startTime) S.startTime=new Date(S.startTime); } } catch(e){}
+    
+    // Theme setup
+    const savedTheme = localStorage.getItem('fast_theme') || 'light';
+    if(savedTheme === 'dark') {
+        document.body.classList.add('dark-mode');
+        document.getElementById('theme-btn').textContent = '☀️';
+    }
+
     if (S.isFasting) { resumeFast(); } else { resetUI(); }
     renderStagesStatic();
 }
-function save() { localStorage.setItem('fast_pro_v2', JSON.stringify(S)); }
+function save() { localStorage.setItem('fast_pro_v3', JSON.stringify(S)); }
+
+function toggleTheme() {
+    const isDark = document.body.classList.toggle('dark-mode');
+    document.getElementById('theme-btn').textContent = isDark ? '☀️' : '🌙';
+    localStorage.setItem('fast_theme', isDark ? 'dark' : 'light');
+}
 
 function showPage(id, el) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -497,18 +527,30 @@ function renderStagesStatic() {
 function renderClock(ms) {
     const svg = document.getElementById('clock-svg'), curIdx = S.isFasting ? stageOf(ms) : -1, R = 130; 
     let html = '';
+    
     STAGES.forEach((st, i) => {
         const startDeg = (st.range[0]/48)*360, endDeg = (Math.min(st.range[1], 48)/48)*360;
         
-        // NEW LOGIC: Past and current stages are fully opaque, only future is dimmed.
         const isCurrent = (i === curIdx && S.isFasting);
         const isFuture = (i > curIdx) || !S.isFasting;
         
         const strokeW = isCurrent ? 16 : 8;
         const op = isFuture ? 0.1 : 1;
         
+        // Draw Stage Arc
         html += `<path d="${arcPath(R, startDeg, endDeg)}" fill="none" stroke="${st.color}" stroke-width="${strokeW}" opacity="${op}" stroke-linecap="round" style="transition:0.4s ease"/>`;
+
+        // Draw Icons exactly on the ring (Opaque for current, dim for past, hidden/faint for future)
+        const midDeg = (startDeg + endDeg) / 2;
+        const iconPos = polarXY(R, midDeg);
+        
+        // Only render the icons prominently if we have passed or are in that stage
+        const iconOp = isFuture ? 0.2 : (isCurrent ? 1 : 0.6);
+        const iconSize = isCurrent ? 20 : 14;
+        
+        html += `<text x="${iconPos.x}" y="${iconPos.y}" text-anchor="middle" dominant-baseline="central" font-size="${iconSize}" opacity="${iconOp}" style="transition:0.4s ease; pointer-events: none;">${st.icon}</text>`;
     });
+    
     svg.innerHTML = html;
 }
 function arcPath(r,s,e) { const start = polarXY(r,s), end = polarXY(r,e); return `M ${start.x} ${start.y} A ${r} ${r} 0 ${e-s>180?1:0} 1 ${end.x} ${end.y}`; }
