@@ -17,6 +17,7 @@
             --blue: #2563EB;
             --success: #16A34A;
             --danger: #DC2626;
+            --overlay: rgba(0,0,0,0.4);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -31,158 +32,57 @@
             overflow: hidden;
         }
 
-        /* --- Header & Tabs --- */
-        nav {
-            padding: 12px 20px 8px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-shrink: 0;
-            background: var(--bg);
-            z-index: 10;
-        }
-
+        /* --- Nav --- */
+        nav { padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
         .logo { font-family: 'Instrument Serif', serif; font-style: italic; font-size: 24px; }
+        .tab-group { display: flex; background: #EBEBEB; padding: 3px; border-radius: 12px; }
+        .tab { padding: 6px 14px; border-radius: 9px; font-size: 12px; font-weight: 700; border: none; cursor: pointer; color: var(--text-muted); background: transparent; transition: 0.2s; }
+        .tab.active { background: var(--surface); color: var(--text-main); box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
 
-        .tab-group {
-            display: flex;
-            background: #EBEBEB;
-            padding: 3px;
-            border-radius: 12px;
-        }
-
-        .tab {
-            padding: 6px 14px;
-            border-radius: 9px;
-            font-size: 12px;
-            font-weight: 700;
-            border: none;
-            cursor: pointer;
-            color: var(--text-muted);
-            background: transparent;
-            transition: 0.2s;
-        }
-
-        .tab.active {
-            background: var(--surface);
-            color: var(--text-main);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-        }
-
-        /* --- Page Management --- */
         .page { flex: 1; overflow-y: auto; padding: 10px 16px 40px; display: none; }
         .page.active { display: block; }
-        ::-webkit-scrollbar { display: none; }
 
         /* --- Timer Card --- */
-        .clock-card {
-            background: var(--surface);
-            border-radius: 28px;
-            padding: 24px 16px;
-            text-align: center;
-            border: 1px solid var(--border);
-            margin-bottom: 12px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.02);
-        }
+        .clock-card { background: var(--surface); border-radius: 28px; padding: 24px 16px; text-align: center; border: 1px solid var(--border); margin-bottom: 12px; position: relative; }
+        .t-stage-label { font-size: 11px; font-weight: 800; letter-spacing: 1.2px; color: var(--text-muted); text-transform: uppercase; }
+        .t-time { font-family: 'Instrument Serif', serif; font-size: 52px; line-height: 1; margin: 8px 0; font-variant-numeric: tabular-nums; }
 
-        .t-stage-label {
-            font-size: 11px;
-            font-weight: 800;
-            letter-spacing: 1.2px;
-            color: var(--text-muted);
-            text-transform: uppercase;
-        }
-
-        .t-time {
-            font-family: 'Instrument Serif', serif;
-            font-size: 52px;
-            line-height: 1;
-            margin: 8px 0;
-            font-variant-numeric: tabular-nums;
-        }
-
-        /* --- Info Grid --- */
-        .body-cards {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-            margin-bottom: 16px;
-        }
-
-        .body-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 18px;
-            padding: 14px 8px;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            min-height: 90px;
-        }
-
-        .body-card-icon { font-size: 20px; margin-bottom: 6px; }
+        /* --- Grid & Controls --- */
+        .body-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 16px; }
+        .body-card { background: var(--surface); border: 1px solid var(--border); border-radius: 18px; padding: 12px 8px; text-align: center; min-height: 85px; display: flex; flex-direction: column; justify-content: center; }
+        .body-card-icon { font-size: 20px; margin-bottom: 4px; }
         .body-card-text { font-size: 9px; font-weight: 600; color: var(--text-muted); line-height: 1.3; }
 
-        /* --- Log Styling --- */
-        .log-section {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 16px;
-            margin-bottom: 12px;
-        }
-        .section-title { font-size: 10px; font-weight: 800; text-transform: uppercase; color: var(--text-muted); margin-bottom: 12px; letter-spacing: 1px; }
+        .control-panel { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 16px; margin-bottom: 16px; }
+        .panel-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .label { font-size: 10px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; }
+        .time-trigger { font-size: 13px; font-weight: 700; color: var(--blue); background: #F0F4FF; padding: 6px 12px; border-radius: 8px; cursor: pointer; }
+        
+        .chip-group { display: flex; gap: 6px; }
+        .chip { padding: 8px 12px; background: #F0F0F0; border-radius: 10px; font-size: 12px; font-weight: 700; cursor: pointer; }
+        .chip.active { background: var(--accent); color: white; }
 
-        .bar-chart { display: flex; align-items: flex-end; justify-content: space-between; height: 80px; gap: 4px; }
+        .btn-main { width: 100%; padding: 18px; border-radius: 20px; border: none; background: var(--accent); color: white; font-size: 16px; font-weight: 700; cursor: pointer; }
+        .btn-main.stop { background: var(--danger); }
+
+        /* --- Log & Stats --- */
+        .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 16px; margin-bottom: 12px; }
+        .stat-grid { display: flex; justify-content: space-between; text-align: center; }
+        .stat-val { font-family: 'Instrument Serif', serif; font-size: 24px; }
+        
+        .bar-chart { display: flex; align-items: flex-end; justify-content: space-between; height: 80px; margin: 20px 0; gap: 4px; }
         .bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; }
         .bar-fill { width: 100%; background: var(--success); border-radius: 4px; opacity: 0.3; transition: height 0.4s; }
         .bar-fill.goal-met { opacity: 1; }
-        .bar-label { font-size: 9px; font-weight: 700; color: var(--text-muted); }
 
         .history-item { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 14px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
-        .hi-date { font-size: 12px; font-weight: 700; }
-        .hi-dur { font-family: 'Instrument Serif', serif; font-size: 20px; }
 
-        /* --- Controls --- */
-        .controls {
-            background: var(--surface);
-            border-radius: 20px;
-            padding: 16px;
-            border: 1px solid var(--border);
-            margin-bottom: 16px;
-        }
-
-        .control-row { display: flex; justify-content: space-between; align-items: center; }
-        .control-label { font-size: 11px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; }
-
-        .goal-chips { display: flex; gap: 6px; }
-        .chip {
-            padding: 8px 14px;
-            background: #F0F0F0;
-            border-radius: 10px;
-            font-size: 12px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
-        .chip.active { background: var(--accent); color: white; }
-
-        .btn-primary {
-            width: 100%;
-            padding: 18px;
-            border-radius: 20px;
-            border: none;
-            background: var(--accent);
-            color: white;
-            font-size: 16px;
-            font-weight: 700;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-
-        .btn-primary.stop { background: var(--danger); }
+        /* --- Modal --- */
+        .modal-overlay { display: none; position: fixed; inset: 0; background: var(--overlay); z-index: 100; align-items: flex-end; }
+        .modal-overlay.active { display: flex; }
+        .modal { background: white; width: 100%; border-radius: 24px 24px 0 0; padding: 24px 20px 40px; animation: slideUp 0.3s ease-out; }
+        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+        input[type="datetime-local"] { width: 100%; padding: 14px; border-radius: 12px; border: 1px solid var(--border); font-family: inherit; font-size: 16px; margin: 15px 0; }
     </style>
 </head>
 <body>
@@ -198,312 +98,187 @@
 
 <div id="page-timer" class="page active">
     <div class="clock-card">
-        <div class="t-stage-label" id="t-stage-current">Ready to Start</div>
-        
-        <div style="position: relative; width: 230px; margin: 15px auto;">
-            <svg id="clock-svg" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg"></svg>
+        <div class="t-stage-label" id="t-stage-current">Ready</div>
+        <div style="position: relative; width: 220px; margin: 15px auto;">
+            <svg id="clock-svg" viewBox="0 0 300 300"></svg>
             <div style="position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; pointer-events: none;">
                 <div class="t-time" id="t-time">00:00:00</div>
-                <div style="font-size: 11px; font-weight: 800; color: var(--blue); letter-spacing: 0.5px;" id="t-status">READY</div>
+                <div style="font-size: 11px; font-weight: 800; color: var(--blue);" id="t-status">READY</div>
             </div>
         </div>
-
         <div id="t-next" style="font-size: 10px; color: var(--text-muted); font-weight: 600;"></div>
     </div>
-
-    <div class="body-cards" id="body-cards">
-        </div>
-
-    <div class="controls" id="timer-controls">
-        <div class="control-row">
-            <span class="control-label">Fasting Goal</span>
-            <div class="goal-chips" id="goal-chips">
-                <div class="chip active" data-h="16" onclick="setGoal(this)">16h</div>
-                <div class="chip" data-h="18" onclick="setGoal(this)">18h</div>
-                <div class="chip" data-h="24" onclick="setGoal(this)">24h</div>
-            </div>
-        </div>
+    <div class="body-cards" id="body-cards"></div>
+    <div class="control-panel">
+        <div class="panel-row"><span class="label">Start Time</span><div class="time-trigger" id="start-time-display" onclick="openTimeModal('start')">Now</div></div>
+        <div class="panel-row"><span class="label">Goal</span><div class="chip-group"><div class="chip active" data-h="16" onclick="setGoal(this)">16h</div><div class="chip" data-h="18" onclick="setGoal(this)">18h</div><div class="chip" data-h="24" onclick="setGoal(this)">24h</div></div></div>
     </div>
-
-    <button class="btn-primary" id="btn-main" onclick="toggleFast()">Start Fast</button>
+    <button class="btn-main" id="btn-main" onclick="handleMainAction()">Start Fast</button>
 </div>
 
 <div id="page-log" class="page">
-    <div class="log-section">
-        <div class="section-title">Fasting Insights</div>
-        <div style="display: flex; justify-content: space-between; text-align: center;">
-            <div><div id="ins-avg" class="hi-dur">—</div><div class="control-label">Avg</div></div>
-            <div><div id="ins-long" class="hi-dur">—</div><div class="control-label">Longest</div></div>
-            <div><div id="ins-total" class="hi-dur">—</div><div class="control-label">Total</div></div>
+    <div class="stat-card">
+        <div class="label" style="margin-bottom:12px">Insights</div>
+        <div class="stat-grid">
+            <div><div class="stat-val" id="ins-avg">—</div><div class="label">Avg</div></div>
+            <div><div class="stat-val" id="ins-long">—</div><div class="label">Longest</div></div>
+            <div><div class="stat-val" id="ins-total">—</div><div class="label">Fasts</div></div>
         </div>
     </div>
-
-    <div class="log-section">
-        <div class="section-title">Recent Activity</div>
-        <div class="bar-chart" id="bar-chart"></div>
-    </div>
-
+    <div class="stat-card"><div class="label">Recent Activity</div><div class="bar-chart" id="bar-chart"></div></div>
     <div id="h-list"></div>
 </div>
 
 <div id="page-stages" class="page">
-    <div id="stages-list"></div>
+    <div id="stages-content"></div>
+</div>
+
+<div class="modal-overlay" id="time-modal">
+    <div class="modal">
+        <div style="font-family:'Instrument Serif',serif; font-size:22px" id="modal-title">Adjust Time</div>
+        <input type="datetime-local" id="modal-picker">
+        <button class="btn-main" onclick="confirmTime()">Confirm</button>
+        <button class="btn-main" style="background:transparent; color:var(--text-muted)" onclick="closeModal()">Cancel</button>
+    </div>
 </div>
 
 <script>
-    // --- STAGE DATA ---
-    const STAGES = [
-        { name:'Fed State', icon:'🍽️', range:[0,4], color:'#94A3B8', cards:[{i:'🍽️',t:'Digesting meal.'},{i:'📈',t:'Sugar rising.'},{i:'⏳',t:'No fat burn.'}] },
-        { name:'Post-Abs', icon:'⚡', range:[4,8], color:'#64748B', cards:[{i:'✅',t:'Digestion done.'},{i:'🔓',t:'Insulin falls.'},{i:'⚡',t:'Glycogen used.'}] },
-        { name:'Gluconeogenesis', icon:'🔄', range:[8,16], color:'#F59E0B', cards:[{i:'🔄',t:'Making glucose.'},{i:'🔥',t:'Fat burning.'},{i:'😮‍💨',t:'Low energy.'}] },
-        { name:'Early Ketosis', icon:'🔥', range:[16,24], color:'#F97316', cards:[{i:'🔥',t:'Burning fat.'},{i:'🧠',t:'Mental focus.'},{i:'😌',t:'Less hunger.'}] },
-        { name:'Deep Ketosis', icon:'✨', range:[24,Infinity], color:'#EF4444', cards:[{i:'✨',t:'Ketone peak.'},{i:'💪',t:'Muscle saved.'},{i:'🧬',t:'Autophagy.'}] }
-    ];
+const STAGES = [
+    { name:'Fed State', icon:'🍽️', range:[0,4], color:'#94A3B8', cards:[{i:'🍽️',t:'Digesting meal.'},{i:'📈',t:'Sugar rising.'},{i:'⏳',t:'No fat burn.'}] },
+    { name:'Post-Abs', icon:'⚡', range:[4,8], color:'#64748B', cards:[{i:'✅',t:'Digestion done.'},{i:'🔓',t:'Insulin falls.'},{i:'⚡',t:'Glycogen used.'}] },
+    { name:'Gluconeogenesis', icon:'🔄', range:[8,16], color:'#F59E0B', cards:[{i:'🔄',t:'Making glucose.'},{i:'🔥',t:'Fat burning.'},{i:'😮‍💨',t:'Low energy.'}] },
+    { name:'Early Ketosis', icon:'🔥', range:[16,24], color:'#F97316', cards:[{i:'🔥',t:'Burning fat.'},{i:'🧠',t:'Mental focus.'},{i:'😌',t:'Less hunger.'}] },
+    { name:'Deep Ketosis', icon:'✨', range:[24,Infinity], color:'#EF4444', cards:[{i:'✨',t:'Ketone peak.'},{i:'💪',t:'Muscle saved.'},{i:'🧬',t:'Autophagy.'}] }
+];
 
-    let S = { isFasting: false, startTime: null, goalHours: 16, history: [] };
-    let iv = null;
+let S = { isFasting: false, startTime: null, goalHours: 16, history: [] };
+let iv = null;
 
-    // --- INITIALIZATION ---
-    function init() {
-        const saved = localStorage.getItem('fast_data_v1');
-        if (saved) {
-            const data = JSON.parse(saved);
-            S = {...S, ...data};
-            if (S.startTime) S.startTime = new Date(S.startTime);
-        }
-        
-        if (S.isFasting) {
-            resumeFast();
-        } else {
-            resetUI();
-        }
-        renderStagesPage();
+function init() {
+    const saved = localStorage.getItem('fast_v3');
+    if (saved) {
+        S = JSON.parse(saved);
+        if (S.startTime) S.startTime = new Date(S.startTime);
     }
+    S.isFasting ? resumeFast() : resetUI();
+    renderStagesStatic();
+}
 
-    function save() {
-        localStorage.setItem('fast_data_v1', JSON.stringify(S));
+function save() { localStorage.setItem('fast_v3', JSON.stringify(S)); }
+
+function showPage(id, el) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('page-' + id).classList.add('active');
+    el.classList.add('active');
+    if (id === 'log') renderLog();
+}
+
+// --- TIMER LOGIC ---
+function handleMainAction() { S.isFasting ? openTimeModal('end') : startFast(); }
+
+function startFast() {
+    if (!S.startTime) S.startTime = new Date();
+    S.isFasting = true;
+    document.getElementById('btn-main').textContent = 'End Fast';
+    document.getElementById('btn-main').classList.add('stop');
+    iv = setInterval(updateUI, 1000);
+    updateUI();
+    save();
+}
+
+function resumeFast() {
+    document.getElementById('btn-main').textContent = 'End Fast';
+    document.getElementById('btn-main').classList.add('stop');
+    iv = setInterval(updateUI, 1000);
+    updateUI();
+}
+
+function confirmTime() {
+    const picked = new Date(document.getElementById('modal-picker').value);
+    if (S.isFasting) { // Ending
+        const duration = picked - S.startTime;
+        if (duration > 0) S.history.unshift({ start: S.startTime, end: picked, duration, goal: S.goalHours });
+        S.isFasting = false; S.startTime = null; clearInterval(iv); resetUI();
+    } else { // Starting
+        S.startTime = picked;
+        document.getElementById('start-time-display').textContent = picked.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
     }
+    closeModal(); save();
+}
 
-    // --- NAVIGATION ---
-    function showPage(id, el) {
-        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-        document.getElementById('page-' + id).classList.add('active');
-        el.classList.add('active');
-        if(id === 'log') renderLogPage();
-    }
+function resetUI() {
+    document.getElementById('btn-main').textContent = 'Start Fast';
+    document.getElementById('btn-main').classList.remove('stop');
+    document.getElementById('t-time').textContent = '00:00:00';
+    document.getElementById('t-status').textContent = 'READY';
+    document.getElementById('start-time-display').textContent = 'Now';
+    renderClock(0); renderBodyCards(-1);
+}
 
-    // --- TIMER CORE ---
-    function toggleFast() {
-        if (!S.isFasting) {
-            startFast();
-        } else {
-            endFast();
-        }
-    }
+function updateUI() {
+    if (!S.startTime) return;
+    const t = new Date() - S.startTime;
+    if (t < 0) return;
+    const h = t / 3600000;
+    document.getElementById('t-time').textContent = new Date(t).toISOString().substr(11, 8);
+    const idx = stageOf(t);
+    document.getElementById('t-stage-current').textContent = STAGES[idx].icon + ' ' + STAGES[idx].name;
+    renderClock(t); renderBodyCards(idx);
+}
 
-    function startFast() {
-        S.isFasting = true;
-        S.startTime = new Date();
-        document.getElementById('btn-main').textContent = 'End Fast';
-        document.getElementById('btn-main').classList.add('stop');
-        document.getElementById('timer-controls').style.opacity = "0.5";
-        document.getElementById('timer-controls').style.pointerEvents = "none";
-        iv = setInterval(updateUI, 1000);
-        updateUI();
-        save();
-    }
+function stageOf(ms) { const h = ms/3600000; const i = STAGES.findIndex(s => h >= s.range[0] && h < s.range[1]); return i === -1 ? STAGES.length-1 : i; }
 
-    function resumeFast() {
-        document.getElementById('btn-main').textContent = 'End Fast';
-        document.getElementById('btn-main').classList.add('stop');
-        document.getElementById('timer-controls').style.opacity = "0.5";
-        document.getElementById('timer-controls').style.pointerEvents = "none";
-        iv = setInterval(updateUI, 1000);
-        updateUI();
-    }
+// --- LOG RENDERING ---
+function renderLog() {
+    if (!S.history.length) return;
+    const avg = S.history.reduce((a,b) => a+b.duration,0) / S.history.length;
+    const longest = Math.max(...S.history.map(h => h.duration));
+    document.getElementById('ins-avg').textContent = Math.round(avg/3600000) + 'h';
+    document.getElementById('ins-long').textContent = Math.round(longest/3600000) + 'h';
+    document.getElementById('ins-total').textContent = S.history.length;
 
-    function endFast() {
-        const endTime = new Date();
-        const durationMs = endTime - S.startTime;
-        
-        if (durationMs > 60000) { // Only log if > 1 minute
-            S.history.unshift({
-                start: S.startTime,
-                end: endTime,
-                duration: durationMs,
-                goal: S.goalHours,
-                met: (durationMs / 3600000) >= S.goalHours
-            });
-        }
+    const recent = S.history.slice(0,7).reverse();
+    const maxVal = Math.max(...recent.map(r => r.duration), S.goalHours*3600000);
+    document.getElementById('bar-chart').innerHTML = recent.map(r => `
+        <div class="bar-col"><div class="bar-fill ${r.duration >= r.goal*3600000 ? 'goal-met' : ''}" style="height:${(r.duration/maxVal)*100}%"></div><div class="label">${Math.round(r.duration/3600000)}h</div></div>
+    `).join('');
 
-        S.isFasting = false;
-        S.startTime = null;
-        clearInterval(iv);
-        resetUI();
-        save();
-    }
+    document.getElementById('h-list').innerHTML = S.history.map(h => `
+        <div class="history-item"><div><div style="font-weight:700">${new Date(h.start).toLocaleDateString()}</div><div class="label">Goal: ${h.goal}h</div></div><div class="stat-val">${(h.duration/3600000).toFixed(1)}h</div></div>
+    `).join('');
+}
 
-    function resetUI() {
-        document.getElementById('btn-main').textContent = 'Start Fast';
-        document.getElementById('btn-main').classList.remove('stop');
-        document.getElementById('timer-controls').style.opacity = "1";
-        document.getElementById('timer-controls').style.pointerEvents = "auto";
-        document.getElementById('t-time').textContent = '00:00:00';
-        document.getElementById('t-status').textContent = 'READY';
-        document.getElementById('t-stage-current').textContent = 'Ready to Start';
-        document.getElementById('t-next').textContent = '';
-        renderClock(0);
-        renderBodyCards(-1);
-    }
+function renderStagesStatic() {
+    document.getElementById('stages-content').innerHTML = STAGES.map(s => `
+        <div class="stat-card"><div style="display:flex; justify-content:space-between; align-items:center"><div>${s.icon} <span style="font-weight:800">${s.name}</span></div><div class="label">${s.range[0]}-${s.range[1]===Infinity?'48+':s.range[1]}h</div></div></div>
+    `).join('');
+}
 
-    function updateUI() {
-        if (!S.startTime) return;
-        const now = new Date();
-        const t = now - S.startTime;
-        const h = t / 3600000;
-        
-        // Time Display
-        const hh = Math.floor(h).toString().padStart(2, '0');
-        const mm = Math.floor((t % 3600000) / 60000).toString().padStart(2, '0');
-        const ss = Math.floor((t % 60000) / 1000).toString().padStart(2, '0');
-        document.getElementById('t-time').textContent = `${hh}:${mm}:${ss}`;
-        
-        const curIdx = stageOf(t);
-        const cur = STAGES[curIdx];
-        
-        // Status Logic
-        if (h >= S.goalHours) {
-            document.getElementById('t-status').textContent = 'GOAL MET ✓';
-            document.getElementById('t-status').style.color = 'var(--success)';
-        } else {
-            document.getElementById('t-status').textContent = 'FASTING';
-            document.getElementById('t-status').style.color = 'var(--blue)';
-        }
+// --- GRAPHICS & MODAL ---
+function openTimeModal(type) { document.getElementById('modal-picker').value = new Date().toISOString().slice(0,16); document.getElementById('time-modal').classList.add('active'); }
+function closeModal() { document.getElementById('time-modal').classList.remove('active'); }
 
-        document.getElementById('t-stage-current').textContent = cur.icon + ' ' + cur.name;
-        
-        // Next Milestone
-        if (curIdx < STAGES.length - 1) {
-            const next = STAGES[curIdx + 1];
-            const remainingH = next.range[0] - h;
-            document.getElementById('t-next').textContent = `Next Stage: ${next.name} in ${Math.ceil(remainingH)}h`;
-        } else {
-            document.getElementById('t-next').textContent = `Maximum Metabolic State Reached`;
-        }
+function renderClock(ms) {
+    const svg = document.getElementById('clock-svg');
+    const curIdx = S.isFasting ? stageOf(ms) : -1;
+    const R = 120; let html = '';
+    STAGES.forEach((st, i) => {
+        const startDeg = (st.range[0]/48)*360; const endDeg = (Math.min(st.range[1], 48)/48)*360;
+        html += `<path d="${arcPath(R, startDeg, endDeg)}" fill="none" stroke="${st.color}" stroke-width="${i===curIdx?18:10}" opacity="${i===curIdx?1:0.1}" stroke-linecap="round" />`;
+    });
+    svg.innerHTML = html;
+}
+function arcPath(r,s,e) { const start = polarXY(r,s), end = polarXY(r,e); return `M ${start.x} ${start.y} A ${r} ${r} 0 ${e-s>180?1:0} 1 ${end.x} ${end.y}`; }
+function polarXY(r,deg) { const rad = (deg-90)*Math.PI/180; return { x: 150+r*Math.cos(rad), y: 150+r*Math.sin(rad) }; }
+function renderBodyCards(idx) {
+    const el = document.getElementById('body-cards');
+    if (idx === -1) { el.innerHTML = `<div class="body-card" style="grid-column: span 3; font-size:11px; color:var(--text-muted)">Start a fast to track body changes.</div>`; return; }
+    el.innerHTML = STAGES[idx].cards.map(c => `<div class="body-card"><div class="body-card-icon">${c.i}</div><div class="body-card-text">${c.t}</div></div>`).join('');
+}
+function setGoal(el) { if(S.isFasting) return; document.querySelectorAll('.chip').forEach(c => c.classList.remove('active')); el.classList.add('active'); S.goalHours = parseInt(el.dataset.h); save(); }
 
-        renderClock(t);
-        renderBodyCards(curIdx);
-    }
-
-    function stageOf(ms) {
-        const h = ms / 3600000;
-        const i = STAGES.findIndex(s => h >= s.range[0] && h < s.range[1]);
-        return i === -1 ? STAGES.length - 1 : i;
-    }
-
-    // --- VISUAL RENDERING ---
-    function renderClock(ms) {
-        const svg = document.getElementById('clock-svg');
-        const curIdx = S.isFasting ? stageOf(ms) : -1;
-        const R = 120;
-        let html = '';
-
-        STAGES.forEach((st, i) => {
-            const startDeg = (st.range[0] / 48) * 360;
-            const endH = st.range[1] === Infinity ? 48 : st.range[1];
-            const endDeg = (endH / 48) * 360;
-            const isActive = (i === curIdx);
-            
-            html += `<path d="${arcPath(R, startDeg, endDeg)}" fill="none" stroke="${st.color}" 
-                     stroke-width="${isActive ? 18 : 10}" opacity="${isActive ? 1 : 0.1}" stroke-linecap="round" 
-                     style="transition: all 0.5s ease" />`;
-        });
-        svg.innerHTML = html;
-    }
-
-    function arcPath(r, s, e) {
-        const start = polarXY(r, s), end = polarXY(r, e);
-        return `M ${start.x} ${start.y} A ${r} ${r} 0 ${e - s > 180 ? 1 : 0} 1 ${end.x} ${end.y}`;
-    }
-
-    function polarXY(r, deg) {
-        const rad = (deg - 90) * Math.PI / 180;
-        return { x: 150 + r * Math.cos(rad), y: 150 + r * Math.sin(rad) };
-    }
-
-    function renderBodyCards(idx) {
-        const el = document.getElementById('body-cards');
-        if (idx === -1) {
-            el.innerHTML = `<div class="body-card" style="grid-column: span 3;"><div class="body-card-text">Your metabolic activity will appear here once you start.</div></div>`;
-            return;
-        }
-        el.innerHTML = STAGES[idx].cards.map(c => `
-            <div class="body-card">
-                <div class="body-card-icon">${c.i}</div>
-                <div class="body-card-text">${c.t}</div>
-            </div>`).join('');
-    }
-
-    function setGoal(el) {
-        if (S.isFasting) return;
-        document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
-        el.classList.add('active');
-        S.goalHours = parseInt(el.dataset.h);
-        save();
-    }
-
-    // --- LOG & HISTORY ---
-    function renderLogPage() {
-        if (S.history.length === 0) {
-            document.getElementById('page-log').innerHTML = '<div style="padding:40px; text-align:center; color:var(--text-muted)">No fasts logged yet.</div>';
-            return;
-        }
-
-        // Stats
-        const avg = S.history.reduce((a,b) => a + b.duration, 0) / S.history.length;
-        const longest = Math.max(...S.history.map(h => h.duration));
-        document.getElementById('ins-avg').textContent = Math.round(avg/3600000) + 'h';
-        document.getElementById('ins-long').textContent = Math.round(longest/3600000) + 'h';
-        document.getElementById('ins-total').textContent = S.history.length;
-
-        // Bar Chart (last 7)
-        const recent = S.history.slice(0,7).reverse();
-        const maxVal = Math.max(...recent.map(r => r.duration), S.goalHours * 3600000);
-        document.getElementById('bar-chart').innerHTML = recent.map(r => {
-            const h = (r.duration / maxVal) * 100;
-            return `<div class="bar-col">
-                <div class="bar-fill ${r.met ? 'goal-met' : ''}" style="height:${h}%"></div>
-                <div class="bar-label">${Math.round(r.duration/3600000)}h</div>
-            </div>`;
-        }).join('');
-
-        // List
-        document.getElementById('h-list').innerHTML = S.history.map(h => `
-            <div class="history-item">
-                <div>
-                    <div class="hi-date">${new Date(h.start).toLocaleDateString()}</div>
-                    <div class="control-label">${h.met ? 'Goal Met' : 'Partial'}</div>
-                </div>
-                <div class="hi-dur">${(h.duration / 3600000).toFixed(1)}h</div>
-            </div>
-        `).join('');
-    }
-
-    function renderStagesPage() {
-        document.getElementById('stages-list').innerHTML = STAGES.map(s => `
-            <div class="log-section">
-                <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
-                    <span style="font-size:24px;">${s.icon}</span>
-                    <span style="font-weight:800; font-size:16px;">${s.name}</span>
-                    <span class="control-label" style="margin-left:auto;">${s.range[0]}-${s.range[1] === Infinity ? '48+' : s.range[1]}h</span>
-                </div>
-                <div class="body-card-text" style="font-size:12px;">This stage involves key metabolic shifts including changes in insulin and fat utilization.</div>
-            </div>
-        `).join('');
-    }
-
-    init();
+init();
 </script>
 </body>
 </html>
