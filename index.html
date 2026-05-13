@@ -58,14 +58,9 @@
 
         /* --- Controls --- */
         .control-panel { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 16px 20px; margin-bottom: 16px; }
-        .panel-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
-        .panel-row:last-child { margin-bottom: 0; }
+        .panel-row { display: flex; justify-content: space-between; align-items: center; }
         .label { font-size: 11px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
         .time-trigger { font-size: 13px; font-weight: 700; color: var(--text-main); background: var(--bg); border: 1px solid var(--border); padding: 8px 14px; border-radius: 10px; cursor: pointer; }
-        
-        .chip-group { display: flex; gap: 6px; flex-wrap: wrap; }
-        .chip { padding: 8px 14px; background: var(--bg); border-radius: 10px; border: 1px solid transparent; font-size: 12px; font-weight: 700; cursor: pointer; transition: 0.2s; color: var(--text-muted); }
-        .chip.active { background: var(--accent); color: white; border-color: var(--accent); }
 
         .btn-main { width: 100%; padding: 18px; border-radius: 20px; border: none; background: var(--accent); color: white; font-size: 16px; font-weight: 700; cursor: pointer; transition: transform 0.1s; }
         .btn-main:active { transform: scale(0.98); }
@@ -180,17 +175,6 @@
             <span class="label">Started</span>
             <button class="time-trigger" id="stc-val" onclick="openStartModal()">Now ▾</button>
         </div>
-        <div class="panel-row" style="margin-bottom:0;">
-            <span class="label">Goal</span>
-            <div class="chip-group" id="goal-chips">
-                <div class="chip active" data-h="16" onclick="setGoal(this)">16h</div>
-                <div class="chip" data-h="18" onclick="setGoal(this)">18h</div>
-                <div class="chip" data-h="20" onclick="setGoal(this)">20h</div>
-                <div class="chip" data-h="24" onclick="setGoal(this)">24h</div>
-                <div class="chip" data-h="36" onclick="setGoal(this)">36h</div>
-                <div class="chip" data-h="48" onclick="setGoal(this)">48h</div>
-            </div>
-        </div>
     </div>
 
     <button class="btn-main" id="btn-main" onclick="toggleFast()">Start Fast</button>
@@ -283,49 +267,30 @@
 </div>
 
 <script>
-// --- DATA: Full descriptions restored ---
 const STAGES = [
-    { name:'Fed State', icon:'🍽️', range:[0,4], color:'#94A3B8',
-      bullets:['Digestion is active — your body is processing your last meal.','Blood glucose and insulin are elevated.','Fat burning is on pause while food energy is available.'],
-      cards:[{i:'🍽️',t:'Digesting your last meal.'},{i:'📈',t:'Blood sugar elevated.'},{i:'⏳',t:'Fat burning on pause.'}] },
-    { name:'Post-Absorptive', icon:'⚡', range:[4,8], color:'#64748B',
-      bullets:['Digestion is complete and blood glucose is normalising.','Your liver starts breaking down glycogen to supply energy.','Insulin is falling — fat burning is beginning to unlock.'],
-      cards:[{i:'✅',t:'Digestion complete.'},{i:'🔓',t:'Fat stores unlocking.'},{i:'⚡',t:'Using liver glycogen.'}] },
-    { name:'Gluconeogenesis', icon:'🔄', range:[8,16], color:'#F59E0B',
-      bullets:['Your liver starts making glucose from non-carb sources.','Fat burning is ramping up as glycogen stores deplete.','You may feel a dip in energy — this is temporary.'],
-      cards:[{i:'🔄',t:'Making new glucose.'},{i:'🔥',t:'Fat burning ramps up.'},{i:'😮‍💨',t:'Temporary energy dip.'}] },
-    { name:'Early Ketosis', icon:'🔥', range:[16,24], color:'#F97316',
-      bullets:['Glycogen stores are depleted — fat is now the primary fuel.','Your liver is producing ketones for brain and body energy.','Many people notice improved mental clarity.'],
-      cards:[{i:'🔥',t:'Fat is primary fuel.'},{i:'🧠',t:'Mental clarity improves.'},{i:'😌',t:'Hunger usually reduces.'}] },
-    { name:'Deep Ketosis', icon:'✨', range:[24,36], color:'#EF4444',
-      bullets:['Ketone production is high — full metabolic switch to fat fuel.','Growth hormone surges, helping preserve muscle mass.','Autophagy begins to accelerate.'],
-      cards:[{i:'✨',t:'Deep fat burning.'},{i:'💪',t:'Muscle mass preserved.'},{i:'🧬',t:'Autophagy accelerates.'}] },
-    { name:'Peak Autophagy', icon:'🧬', range:[36,48], color:'#8B5CF6',
-      bullets:['Autophagy is at its peak — damaged cells are recycled.','Anti-inflammatory effects are significant.','Immune system regeneration begins.'],
-      cards:[{i:'🧬',t:'Peak cellular cleanup.'},{i:'🛡️',t:'Anti-inflammatory.'},{i:'🌱',t:'Immune regeneration.'}] },
-    { name:'Extended Fast', icon:'🌙', range:[48,Infinity], color:'#06B6D4',
-      bullets:['Deep metabolic adaptation — highly efficient fat burning.','Electrolytes become critical.','Only proceed with medical guidance.'],
-      cards:[{i:'🌙',t:'Deep adaptation.'},{i:'💧',t:'Electrolytes critical.'},{i:'⚕️',t:'Medical guidance needed.'}] }
+    { name:'Fed State', icon:'🍽️', range:[0,4], color:'#94A3B8', bullets:['Digestion is active — your body is processing your last meal.','Blood glucose and insulin are elevated.','Fat burning is on pause while food energy is available.'], cards:[{i:'🍽️',t:'Digesting your last meal.'},{i:'📈',t:'Blood sugar elevated.'},{i:'⏳',t:'Fat burning on pause.'}] },
+    { name:'Post-Absorptive', icon:'⚡', range:[4,8], color:'#64748B', bullets:['Digestion is complete and blood glucose is normalising.','Your liver starts breaking down glycogen to supply energy.','Insulin is falling — fat burning is beginning to unlock.'], cards:[{i:'✅',t:'Digestion complete.'},{i:'🔓',t:'Fat stores unlocking.'},{i:'⚡',t:'Using liver glycogen.'}] },
+    { name:'Gluconeogenesis', icon:'🔄', range:[8,16], color:'#F59E0B', bullets:['Your liver starts making glucose from non-carb sources.','Fat burning is ramping up as glycogen stores deplete.','You may feel a dip in energy — this is temporary.'], cards:[{i:'🔄',t:'Making new glucose.'},{i:'🔥',t:'Fat burning ramps up.'},{i:'😮‍💨',t:'Temporary energy dip.'}] },
+    { name:'Early Ketosis', icon:'🔥', range:[16,24], color:'#F97316', bullets:['Glycogen stores are depleted — fat is now the primary fuel.','Your liver is producing ketones for brain and body energy.','Many people notice improved mental clarity.'], cards:[{i:'🔥',t:'Fat is primary fuel.'},{i:'🧠',t:'Mental clarity improves.'},{i:'😌',t:'Hunger usually reduces.'}] },
+    { name:'Deep Ketosis', icon:'✨', range:[24,36], color:'#EF4444', bullets:['Ketone production is high — full metabolic switch to fat fuel.','Growth hormone surges, helping preserve muscle mass.','Autophagy begins to accelerate.'], cards:[{i:'✨',t:'Deep fat burning.'},{i:'💪',t:'Muscle mass preserved.'},{i:'🧬',t:'Autophagy accelerates.'}] },
+    { name:'Peak Autophagy', icon:'🧬', range:[36,48], color:'#8B5CF6', bullets:['Autophagy is at its peak — damaged cells are recycled.','Anti-inflammatory effects are significant.','Immune system regeneration begins.'], cards:[{i:'🧬',t:'Peak cellular cleanup.'},{i:'🛡️',t:'Anti-inflammatory.'},{i:'🌱',t:'Immune regeneration.'}] },
+    { name:'Extended Fast', icon:'🌙', range:[48,Infinity], color:'#06B6D4', bullets:['Deep metabolic adaptation — highly efficient fat burning.','Electrolytes become critical.','Only proceed with medical guidance.'], cards:[{i:'🌙',t:'Deep adaptation.'},{i:'💧',t:'Electrolytes critical.'},{i:'⚕️',t:'Medical guidance needed.'}] }
 ];
 
-let S = { isFasting: false, startTime: null, goalHours: 16, history: [] };
+let S = { isFasting: false, startTime: null, goalHours: 16, history: [] }; // goalHours left for logic/stats defaults
 let iv = null, editingLogId = null;
 
-// Helper Dates
 const toLocalISO = (d) => { const dt=new Date(d); dt.setMinutes(dt.getMinutes() - dt.getTimezoneOffset()); return dt.toISOString().slice(0, 16); };
 const fmtH = (ms) => { const m = Math.floor(ms/60000), h = Math.floor(m/60), mn = m%60; return h===0?`${mn}m`:mn===0?`${h}h`:`${h}h ${mn}m`; };
 const fmtTimeRange = (s,e) => { const fmt=d=>new Date(d).toLocaleTimeString([],{hour:'numeric',minute:'2-digit'}); return `${fmt(s)} – ${fmt(e)}`; };
 
-// --- INIT ---
 function init() {
-    try { const saved = localStorage.getItem('fast_pro'); if(saved){ const s=JSON.parse(saved); S={...S,...s}; if(S.startTime) S.startTime=new Date(S.startTime); } } catch(e){}
-    document.querySelectorAll('.chip').forEach(c => c.classList.toggle('active', parseInt(c.dataset.h) === S.goalHours));
+    try { const saved = localStorage.getItem('fast_pro_v2'); if(saved){ const s=JSON.parse(saved); S={...S,...s}; if(S.startTime) S.startTime=new Date(S.startTime); } } catch(e){}
     if (S.isFasting) { resumeFast(); } else { resetUI(); }
     renderStagesStatic();
 }
-function save() { localStorage.setItem('fast_pro', JSON.stringify(S)); }
+function save() { localStorage.setItem('fast_pro_v2', JSON.stringify(S)); }
 
-// --- NAV ---
 function showPage(id, el) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -333,7 +298,6 @@ function showPage(id, el) {
     if(id === 'log') renderLog();
 }
 
-// --- TIMER ACTIONS ---
 function toggleFast() { S.isFasting ? openEndModal() : startFast(); }
 
 function startFast() {
@@ -341,14 +305,12 @@ function startFast() {
     S.isFasting = true;
     document.getElementById('btn-main').textContent = 'End Fast';
     document.getElementById('btn-main').classList.add('stop');
-    document.getElementById('goal-chips').style.pointerEvents = 'none'; document.getElementById('goal-chips').style.opacity = '0.5';
     iv = setInterval(updateUI, 1000); updateUI(); save();
 }
 
 function resumeFast() {
     document.getElementById('btn-main').textContent = 'End Fast';
     document.getElementById('btn-main').classList.add('stop');
-    document.getElementById('goal-chips').style.pointerEvents = 'none'; document.getElementById('goal-chips').style.opacity = '0.5';
     document.getElementById('stc-val').textContent = new Date(S.startTime).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}) + ' ▾';
     iv = setInterval(updateUI, 1000); updateUI();
 }
@@ -356,14 +318,12 @@ function resumeFast() {
 function resetUI() {
     document.getElementById('btn-main').textContent = 'Start Fast';
     document.getElementById('btn-main').classList.remove('stop');
-    document.getElementById('goal-chips').style.pointerEvents = 'auto'; document.getElementById('goal-chips').style.opacity = '1';
     document.getElementById('stc-val').textContent = 'Now ▾';
     document.getElementById('t-time').textContent = '00:00:00';
     document.getElementById('t-status').textContent = 'READY'; document.getElementById('t-status').style.color = 'var(--blue)';
     document.getElementById('t-stage-current').textContent = 'Ready to Start';
     document.getElementById('t-next').textContent = '';
     
-    // Reset Linear Progress
     document.getElementById('prog-fill').style.width = '0%';
     document.getElementById('prog-fill').classList.remove('done');
     document.getElementById('prog-pct').textContent = '0%';
@@ -379,17 +339,14 @@ function updateUI() {
     
     const h = t / 3600000, pct = Math.min(t/goalMs, 1);
     
-    // Time Strings
     const hh = Math.floor(h).toString().padStart(2, '0');
     const mm = Math.floor((t%3600000)/60000).toString().padStart(2, '0');
     const ss = Math.floor((t%60000)/1000).toString().padStart(2, '0');
     document.getElementById('t-time').textContent = `${hh}:${mm}:${ss}`;
     
-    // Linear Progress
     const pf = document.getElementById('prog-fill');
     pf.style.width = (pct * 100).toFixed(1) + '%';
     
-    // Stage logic
     const curIdx = stageOf(t), cur = STAGES[curIdx];
     document.getElementById('t-stage-current').textContent = cur.icon + ' ' + cur.name;
     
@@ -416,9 +373,7 @@ function updateUI() {
 }
 
 function stageOf(ms) { const h = ms/3600000; const i = STAGES.findIndex(s => h >= s.range[0] && h < s.range[1]); return i === -1 ? STAGES.length-1 : i; }
-function setGoal(el) { if(S.isFasting) return; document.querySelectorAll('.chip').forEach(c => c.classList.remove('active')); el.classList.add('active'); S.goalHours = parseInt(el.dataset.h); save(); }
 
-// --- MODALS (Restored logic) ---
 function openModal(id) { document.getElementById(id).classList.add('active'); }
 function closeModal(id) { document.getElementById(id).classList.remove('active'); }
 function useNow(id) { document.getElementById(id).value = toLocalISO(new Date()); }
@@ -453,7 +408,6 @@ function confirmEndTime() {
     S.isFasting = false; S.startTime = null; clearInterval(iv); resetUI(); save(); closeModal('overlay-end');
 }
 
-// Edit Modal
 function openEditModal(id) {
     const f = S.history.find(h => h.id === id); if(!f) return;
     editingLogId = id;
@@ -473,11 +427,9 @@ function confirmEditLog() {
 }
 function deleteLog(id) { S.history = S.history.filter(h => h.id !== id); save(); renderLog(); }
 
-// --- LOG RENDERING (Week Strip, Bar, List) ---
 function renderLog() {
     if (!S.history.length) { document.getElementById('h-list').innerHTML = '<div style="padding:40px 20px; text-align:center; color:var(--text-muted); font-size:13px;">No fasts logged yet. Complete a fast to see it here.</div>'; document.getElementById('h-count').textContent=''; return; }
 
-    // Week Strip (Restored)
     const days = ['S','M','T','W','T','F','S'], today = new Date(); today.setHours(0,0,0,0);
     document.getElementById('week-strip').innerHTML = Array.from({length:7}, (_, i) => {
         const d = new Date(today); d.setDate(today.getDate() - (6 - i));
@@ -488,20 +440,17 @@ function renderLog() {
         return `<div class="week-day"><div class="week-day-lbl">${days[d.getDay()]}</div><div class="${cls}">${inr}</div></div>`;
     }).join('');
 
-    // Bar Chart
     const recent = S.history.slice(0,7).reverse(), maxVal = Math.max(...recent.map(r => r.duration), 16*3600000);
     document.getElementById('bar-chart').innerHTML = recent.map(r => {
         const h = Math.max((r.duration / maxVal) * 100, 4);
         return `<div class="bar-col"><div class="bar-lbl">${Math.round(r.duration/3600000)}h</div><div class="bar-outer"><div class="bar-fill ${r.met?'goal-met':''}" style="height:${h}%"></div></div></div>`;
     }).join('');
 
-    // Insights
     const avg = S.history.reduce((a,b) => a+b.duration,0) / S.history.length, longest = Math.max(...S.history.map(h => h.duration));
     document.getElementById('ins-avg').textContent = fmtH(avg);
     document.getElementById('ins-long').textContent = fmtH(longest);
     document.getElementById('ins-total').textContent = S.history.length;
 
-    // List (Restored tags, edit, delete)
     document.getElementById('h-count').textContent = S.history.length + ' fasts';
     document.getElementById('h-list').innerHTML = S.history.map(h => `
         <div class="history-item">
@@ -527,7 +476,6 @@ function renderLog() {
     `).join('');
 }
 
-// --- STAGES PAGE (Restored detailed bullets) ---
 function renderStagesStatic() {
     document.getElementById('stages-wrap').innerHTML = STAGES.map(s => `
         <div class="stage-card">
@@ -546,13 +494,20 @@ function renderStagesStatic() {
     `).join('');
 }
 
-// --- GRAPHICS ---
 function renderClock(ms) {
     const svg = document.getElementById('clock-svg'), curIdx = S.isFasting ? stageOf(ms) : -1, R = 130; 
     let html = '';
     STAGES.forEach((st, i) => {
-        const startDeg = (st.range[0]/48)*360, endDeg = (Math.min(st.range[1], 48)/48)*360, isActive = (i === curIdx);
-        html += `<path d="${arcPath(R, startDeg, endDeg)}" fill="none" stroke="${st.color}" stroke-width="${isActive?16:8}" opacity="${isActive?1:0.1}" stroke-linecap="round" style="transition:0.4s ease"/>`;
+        const startDeg = (st.range[0]/48)*360, endDeg = (Math.min(st.range[1], 48)/48)*360;
+        
+        // NEW LOGIC: Past and current stages are fully opaque, only future is dimmed.
+        const isCurrent = (i === curIdx && S.isFasting);
+        const isFuture = (i > curIdx) || !S.isFasting;
+        
+        const strokeW = isCurrent ? 16 : 8;
+        const op = isFuture ? 0.1 : 1;
+        
+        html += `<path d="${arcPath(R, startDeg, endDeg)}" fill="none" stroke="${st.color}" stroke-width="${strokeW}" opacity="${op}" stroke-linecap="round" style="transition:0.4s ease"/>`;
     });
     svg.innerHTML = html;
 }
